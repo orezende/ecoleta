@@ -10,6 +10,11 @@
   box-sizing: border-box;
 }
 
+input, button, select, option {
+  border: none !important;
+  outline: none !important;
+}
+
 body {
   background: #F0F0F5;
   -webkit-font-smoothing: antialiased;
