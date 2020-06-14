@@ -22,7 +22,7 @@ const Detail: React.FC = () => {
   const routeParms = route.params as RouteParamDetailsPoint;
 
   useEffect(() => {
-    api.get(`points/${routeParms.id}`).then(response => {
+    api.get(`points/${routeParms.id}`).then(response => { 
       setData(response.data);
     })
   }, [])
@@ -56,7 +56,7 @@ const Detail: React.FC = () => {
         <Image
           style={styles.pointImage}
           source={{
-            uri: data.point.image
+            uri: data.point.image_url
           }} />
 
         <Text style={styles.pointName}>{data.point.name}</Text>

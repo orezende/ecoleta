@@ -14,6 +14,8 @@ import Item from '../../models/Item';
 import IbgeUfResponse from '../../models/IbgeUfResponse';
 import IbgeCityResponse from '../../models/IbgeCityResponse';
 
+import Dropzone from '../../components/Dropzone';
+
 const CreatePoint: React.FC = () => {
   const [items, setItems] = useState<Array<Item>>([]);
   const [states, setStates] = useState<Array<IbgeUfResponse>>([]);
@@ -25,6 +27,7 @@ const CreatePoint: React.FC = () => {
   const [selectedCity, setSelectedCity] = useState('');
   const [selectedItems, setSelectedItems] = useState<Array<Number>>([]);
   const [selectedPosition, setSelectedPosition] = useState<[number, number]>([0, 0]);
+  const [uploadedFile, setUploadedFile] = useState<File>();
 
   const [formData, setFormData] = useState({
     name: '',
@@ -102,17 +105,20 @@ const CreatePoint: React.FC = () => {
     const [latitude, longitude] = selectedPosition;
     const items = selectedItems;
 
-    const data = {
-      name,
-      email,
-      whatsapp,
-      uf,
-      city,
-      latitude, 
-      longitude,
-      items
-    }
+    const data = new FormData();
 
+    data.append('name', name);
+    data.append('email', email);
+    data.append('whatsapp', whatsapp);
+    data.append('uf', uf);
+    data.append('city', city);
+    data.append('latitude', String(latitude));
+    data.append('longitude', String(longitude));
+    data.append('items', items.join(','));
+
+    if (uploadedFile) 
+      data.append('image', uploadedFile);
+    
     await api.post('points', data);
 
     alert('Ponto de coleta criado');
@@ -133,6 +139,8 @@ const CreatePoint: React.FC = () => {
 
       <form onSubmit={handleSubmit}>
         <h1>Cadastro do <br /> ponto de coleta</h1>
+
+        <Dropzone onFileUploaded={setUploadedFile} />
 
         <fieldset>
           <legend>
